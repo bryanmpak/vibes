@@ -2,7 +2,7 @@ import "./globals.css"
 import { Inter, Roboto } from "next/font/google"
 
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
+import { authOptions } from "@/src/lib/auth"
 import Navbar from "@/src/components/Navbar"
 import TextInput from "@/src/components/TextInput"
 

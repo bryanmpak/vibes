@@ -12,11 +12,8 @@ function TextInput() {
       return
     }
 
-    const inputEnhanced = `You are an assistant that only responds in JSON. 
-      Create a list of 10 unique songs based off the following 
-      statement: "${input}". Include "id", "title", "artist", "album" 
-      in your response. An example response is: "
-      [
+    const inputEnhanced = `You are an assistant that only responds in JSON. Create a list of 3 unique songs based off the following statement: "${input}". Include "id", "title", "artist", "album" in your response. An example response is:
+      "[
         {
             "id": 1,
             "title": "Hey Jude",
@@ -30,17 +27,16 @@ function TextInput() {
 
     setInput("")
 
-    fetch("/api/prompt", {
+    await fetch("/api/prompt", {
       method: "POST",
       headers: {
-        "Content-Type": "application/JSON",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         prompt,
       }),
     })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
+    // .then((data) => console.log(data))
   }
 
   return (
