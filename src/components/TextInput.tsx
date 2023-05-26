@@ -1,17 +1,53 @@
 "use client"
 import Image from "next/image"
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 
 function TextInput() {
   const [input, setInput] = useState("")
 
-  const handleSubmit = async () => {
-    const prompt = input.trim()
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault
+
+    if (!input) {
+      return
+    }
+
+    const inputEnhanced = `You are an assistant that only responds in JSON. 
+      Create a list of 10 unique songs based off the following 
+      statement: "${input}". Include "id", "title", "artist", "album" 
+      in your response. An example response is: "
+      [
+        {
+            "id": 1,
+            "title": "Hey Jude",
+            "artist": "The Beatles",
+            "album": "The Beatles (White Album)",
+            "duration": "4:56"
+        }
+      ]".`
+
+    const prompt = inputEnhanced.trim()
+
     setInput("")
+
+    fetch("/api/prompt", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/JSON",
+      },
+      body: JSON.stringify({
+        prompt,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
   }
 
   return (
-    <form className="bg-bg_secondary text-gray-400 text-sm p-4 flex flex-col">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-bg_secondary text-gray-400 text-sm p-4 flex flex-col"
+    >
       <textarea
         className="p-2 bg-transparent resize-none focus:outline-none rounded-md"
         rows={5}
