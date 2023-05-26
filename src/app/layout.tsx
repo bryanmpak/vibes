@@ -1,8 +1,10 @@
 import "./globals.css"
 import { Inter, Roboto } from "next/font/google"
-import { SessionProvider } from "../../components/SessionProvider"
+
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../lib/auth"
+import { authOptions } from "@/lib/auth"
+import Navbar from "@/src/components/Navbar"
+import TextInput from "@/src/components/TextInput"
 
 const inter = Inter({ subsets: ["latin"] })
 const roboto = Roboto({
@@ -25,7 +27,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <SessionProvider session={session}>{children}</SessionProvider>
+        {/* <SessionProvider session={session}> */}
+        <main className="flex h-screen flex-col justify-between bg-bg_main">
+          <Navbar />
+
+          {children}
+          <TextInput />
+        </main>
+        {/* </SessionProvider> */}
       </body>
     </html>
   )

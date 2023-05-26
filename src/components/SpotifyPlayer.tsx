@@ -4,8 +4,7 @@ function SpotifyPlayer() {
   return (
     <div>
       <iframe
-        className=""
-        src="https://open.spotify.com/embed/playlist/31OIme0YdF4ORWvEdTyE6V"
+        src="https://open.spotify.com/embed/playlist/31OIme0YdF4ORWvEdTyE6V?utm_source=generator"
         width="100%"
         height="352"
         frameBorder="0"

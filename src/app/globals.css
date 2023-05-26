@@ -7,6 +7,12 @@ body {
   --color-accent_2: #80c0dc;
   --color-bg_main: #333333;
   --color-bg_secondary: #252526;
-  --color-bg_tertiary: #37373e;
-  --color-bg_accent: #37373e;
+  --color-bg_tertiary: #535353;
+  --color-bg_accent: #3c3c3c;
+}
+
+@layer components {
+  .infoText {
+    @apply flex items-center gap-1 px-2;
+  }
 }
