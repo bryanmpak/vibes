@@ -1,42 +1,70 @@
 "use client"
 import Image from "next/image"
-import { FormEvent, useState } from "react"
+import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 
-function TextInput() {
+type Props = {
+  setSongsArr: Dispatch<SetStateAction<Song[]>>
+}
+
+function TextInput({ setSongsArr }: Props) {
   const [input, setInput] = useState("")
 
+  const buildPrompt = (input: string) => {
+    const promptTemplate = `You are an assistant that only responds in JSON. 
+    Create a list of 3 unique songs based off the following statement: "${input}". 
+    Include "id", "title", "artist", "album" in your response. 
+    An example response is:
+    "[
+        {
+            "id": 1,
+            "title": "Here Comes the Sun",
+            "artist": "The Beatles",
+            "album": "Abbey Road",
+            "duration": "3:05",
+            "spotify_uri": "spotify:track:6dGnYIeXmHdcikdzNNDMm2"
+        }
+      ]"
+
+    `
+    return promptTemplate.trim()
+  }
+
+  const sendPrompt = async (prompt: string) => {
+    try {
+      const response = await fetch("/api/prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt }),
+      })
+
+      if (!response.ok) {
+        console.error("Fetch operation failed with status: ", response.status)
+        return
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error("Fetch operation failed: ", error)
+    }
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault
+    e.preventDefault()
 
     if (!input) {
       return
     }
 
-    const inputEnhanced = `You are an assistant that only responds in JSON. Create a list of 3 unique songs based off the following statement: "${input}". Include "id", "title", "artist", "album" in your response. An example response is:
-      "[
-        {
-            "id": 1,
-            "title": "Hey Jude",
-            "artist": "The Beatles",
-            "album": "The Beatles (White Album)",
-            "duration": "4:56"
-        }
-      ]".`
-
-    const prompt = inputEnhanced.trim()
-
+    const prompt = buildPrompt(input)
     setInput("")
 
-    await fetch("/api/prompt", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt,
-      }),
-    })
-    // .then((data) => console.log(data))
+    const data = await sendPrompt(prompt)
+    console.log("Data before setting state: ", data)
+    setSongsArr(data)
+    console.log("returned songs", data)
   }
 
   return (

@@ -4,7 +4,6 @@ import { Inter, Roboto } from "next/font/google"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/src/lib/auth"
 import Navbar from "@/src/components/Navbar"
-import TextInput from "@/src/components/TextInput"
 
 const inter = Inter({ subsets: ["latin"] })
 const roboto = Roboto({
@@ -32,7 +31,6 @@ export default async function RootLayout({
           <Navbar />
 
           {children}
-          <TextInput />
         </main>
         {/* </SessionProvider> */}
       </body>
