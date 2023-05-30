@@ -40,14 +40,14 @@ function TextInput({ setSongsArr }: Props) {
       })
 
       if (!response.ok) {
-        console.error("Fetch operation failed with status: ", response.status)
+        console.error("fetch operation failed with status: ", response.status)
         return
       }
 
       const data = await response.json()
       return data
     } catch (error) {
-      console.error("Fetch operation failed: ", error)
+      console.error("fetch operation failed: ", error)
     }
   }
 
@@ -62,9 +62,7 @@ function TextInput({ setSongsArr }: Props) {
     setInput("")
 
     const data = await sendPrompt(prompt)
-    console.log("Data before setting state: ", data)
     setSongsArr(data)
-    console.log("returned songs", data)
   }
 
   return (

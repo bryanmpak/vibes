@@ -17,9 +17,11 @@ export default function Home() {
     <div className="flex-1 flex flex-col space-y-8 px-4 ">
       {/* change this so that it's either spotify player OR prompt instructions */}
       <SpotifyPlayer />
-      {/* {songsArr.length === 0 ? <PromptDesc /> : <PlaylistTable />} */}
-      <PromptDesc />
-      <PlaylistTable songsArr={songsArr} />
+      {songsArr.length === 0 ? (
+        <PromptDesc />
+      ) : (
+        <PlaylistTable songsArr={songsArr} />
+      )}
       <TextInput setSongsArr={setSongsArr} />
     </div>
   )
