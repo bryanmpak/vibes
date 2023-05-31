@@ -13,6 +13,8 @@ export async function POST(req: NextRequest) {
     })
     const responseData = response.data.choices[0]?.text || "[]"
     const jsonData = JSON.parse(responseData)
+
+    // .json() is an async method that returns a promise with JSON object
     return NextResponse.json(jsonData)
   } catch (error) {
     return NextResponse.error()

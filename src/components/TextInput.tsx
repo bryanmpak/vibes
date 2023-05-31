@@ -11,17 +11,20 @@ function TextInput({ setSongsArr }: Props) {
 
   const buildPrompt = (input: string) => {
     const promptTemplate = `You are an assistant that only responds in JSON. 
-    Create a list of 3 unique songs based off the following statement: "${input}". 
-    Include "id", "title", "artist", "album" in your response. 
+    
+    Create a list of 3 unique songs and create a fun & creative playlist title based off the following statement: "${input}". 
+    
+    Include "playlist_title", "id", "title", "artist", "album", "spotify_uri" in your response. 
     An example response is:
     "[
         {
-            "id": 1,
-            "title": "Here Comes the Sun",
-            "artist": "The Beatles",
-            "album": "Abbey Road",
-            "duration": "3:05",
-            "spotify_uri": "spotify:track:6dGnYIeXmHdcikdzNNDMm2"
+          "playlist_title": "BeatleMania!"
+          "id": 1,
+          "title": "Here Comes the Sun",
+          "artist": "The Beatles",
+          "album": "Abbey Road",
+          "duration": "3:05",
+          "spotify_uri": "spotify:track:6dGnYIeXmHdcikdzNNDMm2"
         }
       ]"
 
@@ -29,6 +32,7 @@ function TextInput({ setSongsArr }: Props) {
     return promptTemplate.trim()
   }
 
+  // make this a lib helper file to clean this up a bit
   const sendPrompt = async (prompt: string) => {
     try {
       const response = await fetch("/api/prompt", {
