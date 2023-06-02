@@ -1,5 +1,6 @@
 "use client"
 
+import { useSession } from "next-auth/react"
 import { useState } from "react"
 import PlaylistTable from "../components/PlaylistTable"
 import PromptDesc from "../components/PromptDesc"
@@ -8,8 +9,8 @@ import TextInput from "../components/TextInput"
 
 export default function Home() {
   const [songsArr, setSongsArr] = useState<Song[]>([])
-
-  // do stuff with the songsArr re: Spotify API
+  const { data: session } = useSession()
+  console.log(session)
 
   console.log("songs:", songsArr)
 

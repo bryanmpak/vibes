@@ -1,7 +1,6 @@
 import { NextAuthOptions } from "next-auth"
 import SpotifyProvider from "next-auth/providers/spotify"
 import GoogleProvider from "next-auth/providers/google"
-import { JWT } from "next-auth/jwt"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -15,11 +14,16 @@ export const authOptions: NextAuthOptions = {
     // })
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, account }) {
       if (account) {
-        token.accessToken = account.accessToken
+        token.id = account.id
+        token.accessToken = account.refresh_token
       }
       return token
+    },
+    async session({ session, user }) {
+      session.user = user
+      return session
     },
   },
 }

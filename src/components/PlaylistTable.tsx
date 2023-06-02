@@ -1,48 +1,25 @@
 import Image from "next/image"
-import React from "react"
 
 function PlaylistTable({ songsArr }: SongsList) {
-  // move to a separate custom hook
   // this one is fun since you need to do two separate, chained API calls
 
   async function handleClick({ songsArr }: SongsList) {
-    let response = await fetch(
-      //${user_id}
-      `https://api.spotify.com/v1/users/bpakfasho/playlists`,
-      {
-        method: "POST",
-        headers: {
-          // ${access_token}
-          Authorization: `Bearer enter_token_here`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: songsArr[0].playlist_title,
-        }),
-      }
-    )
-    let data = await response.json()
-    //need to extract this from function - state for now? localStorage OR external db for later?
-    const playlist_id = data.id
+    const response = await fetch("/api/playlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ songsArr }),
+    })
 
-    const songsArrUri = songsArr.map((song) => [song.spotify_uri])
-    console.log("spotify_tracks:", songsArrUri)
-
-    response = await fetch(
-      `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uris: songsArrUri,
-        }),
-      }
-    )
-
-    data = await response.json()
-    return data.snapshot_id
-    // once this is done, change the embed link in <SpotifyPlayer />
+    // Handle the response from the server
+    if (response.ok) {
+      const data = await response.json()
+      // maybe add this to state?
+      const playlist_id = data.playlist_id
+    } else {
+      console.log("Error creating playlist")
+    }
   }
 
   return (

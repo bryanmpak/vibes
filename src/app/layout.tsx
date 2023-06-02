@@ -30,10 +30,14 @@ export default async function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <SessionProvider session={session}>
-          <main className="flex h-screen flex-col justify-between bg-bg_main">
-            <Navbar />
-            {!session ? <Login /> : { children }}
-          </main>
+          {!session ? (
+            <Login />
+          ) : (
+            <main className="flex h-screen flex-col justify-between bg-bg_main">
+              <Navbar />
+              {children}
+            </main>
+          )}
         </SessionProvider>
       </body>
     </html>
