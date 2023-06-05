@@ -35,7 +35,7 @@ function PlaylistTable({ songsArr }: SongsList) {
   async function handleClick() {
     // console.log("username:", session?.user.userName)
     let response = await fetch(
-      `https://api.spotify.com/v1/users/${userName}/playlists`,
+      `https://api.spotify.com/v1/users/${session?.user.name}/playlists`,
       {
         method: "POST",
         headers: {
