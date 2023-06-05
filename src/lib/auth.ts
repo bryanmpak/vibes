@@ -7,8 +7,9 @@ export const authOptions: NextAuthOptions = {
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID!,
       clientSecret: process.env.SPOTIFY_SECRET!,
+
       authorization: {
-        url: "https://accounts.spotify.com/authorize?scope=user-read-email,playlist-read-private",
+        url: "https://accounts.spotify.com/authorize?scope=user-read-email,playlist-read-private,playlist-read-public",
       },
     }),
     // GoogleProvider({

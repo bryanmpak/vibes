@@ -1,31 +1,64 @@
+import { getServerSession } from "next-auth"
+import { useSession } from "next-auth/react"
 import Image from "next/image"
+import { authOptions } from "../lib/auth"
 
 function PlaylistTable({ songsArr }: SongsList) {
+  const { data: session } = useSession()
+  const token = session?.user.access_token
+  console.log("token:", typeof token)
+  console.log(session)
   // this one is fun since you need to do two separate, chained API calls
 
-  async function handleClick({ songsArr }: SongsList) {
-    const response = await fetch("/api/playlist", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ songsArr }),
-    })
+  // for when i've properly hooked up spotify api calls
+  // async function handleClick({ songsArr }: SongsList) {
+  //   const response = await fetch("/api/playlist", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ songsArr }),
+  //   })
 
-    // Handle the response from the server
-    if (response.ok) {
-      const data = await response.json()
-      // maybe add this to state?
-      const playlist_id = data.playlist_id
-    } else {
-      console.log("Error creating playlist")
-    }
+  //   // Handle the response from the server
+  //   if (response.ok) {
+  //     const data = await response.json()
+  //     // maybe add this to state?
+  //     const playlist_id = data.playlist_id
+  //   } else {
+  //     console.log("Error creating playlist")
+  //   }
+  // }
+
+  // for testing api calls
+
+  async function handleClick() {
+    // console.log("username:", session?.user.userName)
+    let response = await fetch(
+      `https://api.spotify.com/v1/users/${userName}/playlists`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: songsArr[0].playlist_title,
+        }),
+      }
+    )
+    let data = await response.json()
+    // const playlistId = data.id
+    console.log("playlistId:", data)
   }
 
   return (
     // return it in a table & add a button to save playlist
     <div className="flex flex-col items-end">
-      <button className="mb-4 flex justify-between p-1 text-sm font-light bg-accent_1 text-white hover:opacity-50 rounded">
+      <button
+        onClick={handleClick}
+        className="mb-4 flex justify-between p-1 text-sm font-light bg-accent_1 text-white hover:opacity-50 rounded"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
