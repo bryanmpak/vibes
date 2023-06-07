@@ -8,15 +8,19 @@ import TextInput from "../components/TextInput"
 
 export default function Home() {
   const [songsArr, setSongsArr] = useState<Song[]>([])
+  const [playlistEmbedId, setPlaylistEmbedId] = useState("")
 
   return (
     <div className="flex-1 flex flex-col space-y-8 px-4 ">
       {/* change this so that it's either spotify player OR prompt instructions */}
-      <SpotifyPlayer />
+      {playlistEmbedId && <SpotifyPlayer playlistEmbedId={playlistEmbedId} />}
       {songsArr.length === 0 ? (
         <PromptDesc />
       ) : (
-        <PlaylistTable songsArr={songsArr} />
+        <PlaylistTable
+          songsArr={songsArr}
+          setPlaylistEmbedId={setPlaylistEmbedId}
+        />
       )}
       <TextInput setSongsArr={setSongsArr} />
       <button className="w-4 h-4" onClick={() => signOut()} />

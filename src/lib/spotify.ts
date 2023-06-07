@@ -20,6 +20,9 @@ const getAccessToken = async (refresh_token: any) => {
   return response.json()
 }
 
+//
+
+// refactor this to use the first half of 'creating playlist'
 export const getUsersPlaylists = async (refresh_token: any) => {
   const { access_token } = await getAccessToken(refresh_token)
   return fetch(PLAYLISTS_ENDPOINT, {

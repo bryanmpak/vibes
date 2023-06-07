@@ -1,10 +1,14 @@
 import React from "react"
 
-function SpotifyPlayer() {
+type Props = {
+  playlistEmbedId: String
+}
+
+function SpotifyPlayer(playlistEmbedId: Props) {
   return (
     <div>
       <iframe
-        src="https://open.spotify.com/embed/playlist/31OIme0YdF4ORWvEdTyE6V?utm_source=generator"
+        src={`https://open.spotify.com/embed/playlist/${playlistEmbedId}?utm_source=generator`}
         width="100%"
         height="352"
         frameBorder="0"

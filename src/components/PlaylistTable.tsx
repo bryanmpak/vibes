@@ -1,39 +1,21 @@
-import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
+import { headers } from "next/dist/client/components/headers"
 import Image from "next/image"
-import { authOptions } from "../lib/auth"
+import { Dispatch, SetStateAction } from "react"
 
-function PlaylistTable({ songsArr }: SongsList) {
+type Props = {
+  setPlaylistEmbedId: Dispatch<SetStateAction<string>>
+  songsArr: Song[]
+}
+
+function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
   const { data: session } = useSession()
   const token = session?.accessToken
-  console.log("token:", token)
-  console.log(session)
-  // this one is fun since you need to do two separate, chained API calls
-
-  // for when i've properly hooked up spotify api calls
-  // async function handleClick({ songsArr }: SongsList) {
-  //   const response = await fetch("/api/playlist", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ songsArr }),
-  //   })
-
-  //   // Handle the response from the server
-  //   if (response.ok) {
-  //     const data = await response.json()
-  //     // maybe add this to state?
-  //     const playlist_id = data.playlist_id
-  //   } else {
-  //     console.log("Error creating playlist")
-  //   }
-  // }
-
-  // for testing api calls
+  // console.log("token:", token)
+  // console.log(session)
+  const spotifyUriList: string[] = []
 
   async function handleClick() {
-    // console.log("username:", session?.user.userName)
     let response = await fetch(
       `https://api.spotify.com/v1/users/${session?.user?.name}/playlists`,
       {
@@ -48,8 +30,45 @@ function PlaylistTable({ songsArr }: SongsList) {
       }
     )
     let data = await response.json()
-    // const playlistId = data.id
-    console.log("playlistId:", data)
+    const playlistId = data.id
+    // console.log("playlistId:", playlistId)
+
+    // SPOTIFY URI search, since GPT URI fetch sucks
+    // const requests = songsArr.map(song => {
+    //   fetch(
+    //     `https://api.spotify.com/v1/search?q=name:${encodeURIComponent(
+    //       song.title
+    //     )}album:${encodeURIComponent(song.album)}artist:${encodeURIComponent(
+    //       song.artist
+    //     )}&type=track`,
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   )
+    //     .then((resp) => resp.json())
+    //     .then((data) => spotifyUriList.push(data.tracks.items[0].uri))
+
+    //     }
+    //   )
+
+    response = await fetch(
+      `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uris: spotifyUriList,
+        }),
+      }
+    )
+    data = await response.json()
+    console.log(data)
   }
 
   return (

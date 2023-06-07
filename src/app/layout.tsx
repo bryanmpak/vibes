@@ -27,12 +27,12 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={`bg-bg_main ${roboto.className}`}>
         <SessionProvider session={session}>
           {!session ? (
             <Login />
           ) : (
-            <main className="flex h-screen flex-col justify-between bg-bg_main">
+            <main className="flex  mx-auto h-screen flex-col max-w-[800px] justify-between">
               <Navbar />
               {children}
             </main>

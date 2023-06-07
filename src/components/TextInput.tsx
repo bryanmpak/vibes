@@ -12,10 +12,9 @@ function TextInput({ setSongsArr }: Props) {
   const buildPrompt = (input: string) => {
     const promptTemplate = `You are an assistant that only responds in JSON. 
     
-    Create a list of 3 unique songs that exist on Spotify and create a fun & creative playlist title based off the following statement: "${input}". 
+    Create a list of 3 unique songs and create a fun & creative playlist title based off the following statement: "${input}". 
     
-    Include "playlist_title", "id", "title", "artist", "album", "spotify_uri" in your response. 
-    An example response is:
+    Include "playlist_title", "id", "title", "artist", "album", "spotify_uri" in your response. Ensure that the "spotify_uri" field contains a valid URI for each song. An example response is: 
     "[
         {
           "playlist_title": "BeatleMania!"
@@ -27,7 +26,6 @@ function TextInput({ setSongsArr }: Props) {
           "spotify_uri": "spotify:track:6dGnYIeXmHdcikdzNNDMm2"
         }
       ]"
-
     `
     return promptTemplate.trim()
   }

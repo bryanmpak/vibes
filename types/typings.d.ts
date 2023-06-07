@@ -4,7 +4,7 @@ interface Song {
   spotify_uri: string
   title: string
   artist: string
-  album?: string
+  album: string
   duration?: string
 }
 

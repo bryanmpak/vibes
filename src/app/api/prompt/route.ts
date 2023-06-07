@@ -12,8 +12,9 @@ export async function POST(req: NextRequest) {
       temperature: 0,
     })
     const responseData = response.data.choices[0]?.text || "[]"
-    console.log("promptResponse:", responseData)
+    console.log("promptResponse:", responseData, "type:", typeof responseData)
     const jsonData = JSON.parse(responseData)
+    console.log(jsonData)
 
     // .json() is an async method that returns a promise with JSON object
     return NextResponse.json(jsonData)
