@@ -13,7 +13,7 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
   const token = session?.accessToken
   // console.log("token:", token)
   // console.log(session)
-  const spotifyUriList: string[] = []
+  const spotifyUriList: string[] = songsArr.map((song) => song.spotify_uri)
 
   async function handleClick() {
     let response = await fetch(
@@ -69,6 +69,7 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
     )
     data = await response.json()
     console.log(data)
+    setPlaylistEmbedId(playlistId)
   }
 
   return (

@@ -4,11 +4,11 @@ type Props = {
   playlistEmbedId: String
 }
 
-function SpotifyPlayer(playlistEmbedId: Props) {
+function SpotifyPlayer({ playlistEmbedId }: Props) {
   return (
     <div>
       <iframe
-        src={`https://open.spotify.com/embed/playlist/${playlistEmbedId}?utm_source=generator`}
+        src={`https://open.spotify.com/embed/playlist/${playlistEmbedId}`}
         width="100%"
         height="352"
         frameBorder="0"
