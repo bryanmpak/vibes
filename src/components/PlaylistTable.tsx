@@ -13,9 +13,8 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
   const token = session?.accessToken
   // console.log("token:", token)
   // console.log(session)
-  const spotifyUriList: string[] = songsArr.map((song) => song.spotify_uri)
 
-  async function handleClick() {
+  const handleClick = async () => {
     let response = await fetch(
       `https://api.spotify.com/v1/users/${session?.user?.name}/playlists`,
       {
@@ -34,29 +33,33 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
     // console.log("playlistId:", playlistId)
 
     // SPOTIFY URI search, since GPT URI fetch sucks
-    // const requests = songsArr.map(song => {
-    //   fetch(
-    //     `https://api.spotify.com/v1/search?q=name:${encodeURIComponent(
-    //       song.title
-    //     )}album:${encodeURIComponent(song.album)}artist:${encodeURIComponent(
-    //       song.artist
-    //     )}&type=track`,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   )
-    //     .then((resp) => resp.json())
-    //     .then((data) => spotifyUriList.push(data.tracks.items[0].uri))
+    const spotifyUriList: string[] = []
+    const results = songsArr.map((song) =>
+      fetch(
+        `https://api.spotify.com/v1/search?q=track%3A${encodeURIComponent(
+          song.title
+        )} artist%3A${encodeURIComponent(
+          song.artist
+        )} album%3A${encodeURIComponent(song.album)}&type=track`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((resp) => resp.json())
+        .then((data) => {
+          const track_uri = data.tracks.items[0].uri
+          spotifyUriList.push(track_uri)
+          console.log(track_uri)
+          console.log(spotifyUriList)
+        })
+    )
 
-    //     }
-    //   )
-
-    response = await fetch(
-      `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-      {
+    Promise.all(results).then(() => {
+      fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,11 +68,11 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
         body: JSON.stringify({
           uris: spotifyUriList,
         }),
-      }
-    )
-    data = await response.json()
-    console.log(data)
-    setPlaylistEmbedId(playlistId)
+      })
+        .then((resp) => resp.json())
+        .then((data) => console.log(data))
+      setPlaylistEmbedId(playlistId)
+    })
   }
 
   return (
