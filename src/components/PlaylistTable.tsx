@@ -6,9 +6,10 @@ import { Dispatch, SetStateAction } from "react"
 type Props = {
   setPlaylistEmbedId: Dispatch<SetStateAction<string>>
   songsArr: Song[]
+  setSongsArr: Dispatch<SetStateAction<Song[]>>
 }
 
-function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
+function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
   const { data: session } = useSession()
   const token = session?.accessToken
   // console.log("token:", token)
@@ -38,9 +39,7 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
       fetch(
         `https://api.spotify.com/v1/search?q=track%3A${encodeURIComponent(
           song.title
-        )} artist%3A${encodeURIComponent(
-          song.artist
-        )} album%3A${encodeURIComponent(song.album)}&type=track`,
+        )} artist%3A${encodeURIComponent(song.artist)} &type=track`,
         {
           method: "GET",
           headers: {
@@ -72,6 +71,7 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId }: Props) {
         .then((resp) => resp.json())
         .then((data) => console.log(data))
       setPlaylistEmbedId(playlistId)
+      setSongsArr([])
     })
   }
 

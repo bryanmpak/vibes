@@ -12,15 +12,16 @@ export default function Home() {
 
   return (
     <div className="flex-1 flex flex-col space-y-8 px-4 ">
-      {/* change this so that it's either spotify player OR prompt instructions */}
       {playlistEmbedId && <SpotifyPlayer playlistEmbedId={playlistEmbedId} />}
       {songsArr.length === 0 ? (
         <PromptDesc />
       ) : (
-        <PlaylistTable
-          songsArr={songsArr}
-          setPlaylistEmbedId={setPlaylistEmbedId}
-        />
+        !playlistEmbedId && (
+          <PlaylistTable
+            songsArr={songsArr}
+            setPlaylistEmbedId={setPlaylistEmbedId}
+          />
+        )
       )}
       <TextInput setSongsArr={setSongsArr} />
       <button className="w-4 h-4" onClick={() => signOut()} />

@@ -4,17 +4,22 @@ import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 
 type Props = {
   setSongsArr: Dispatch<SetStateAction<Song[]>>
+  playlistEmbedId: String
 }
 
-function TextInput({ setSongsArr }: Props) {
+function TextInput({ setSongsArr, playlistEmbedId }: Props) {
   const [input, setInput] = useState("")
 
   const buildPrompt = (input: string) => {
-    const promptTemplate = `You are an assistant that only responds in JSON. 
+    //, "spotify_uri" in your response. Ensure that the "spotify_uri" field contains a valid URI for each song.
+    //      "spotify_uri": "spotify:track:6dGnYIeXmHdcikdzNNDMm2"
+    const promptTemplate = `You are a song recommender that only responds in JSON. 
     
-    Create a list of 3 unique songs and create a fun & creative playlist title based off the following statement: "${input}". 
+    Create a list of 7 unique songs and create a fun & creative playlist title based off the following statement: "${input}". 
     
-    Include "playlist_title", "id", "title", "artist", "album", "spotify_uri" in your response. Ensure that the "spotify_uri" field contains a valid URI for each song. An example response is: 
+    Include "playlist_title", "id", "title", "artist", "album".
+    
+    An example response is: 
     "[
         {
           "playlist_title": "BeatleMania!"
@@ -23,7 +28,6 @@ function TextInput({ setSongsArr }: Props) {
           "artist": "The Beatles",
           "album": "Abbey Road",
           "duration": "3:05",
-          "spotify_uri": "spotify:track:6dGnYIeXmHdcikdzNNDMm2"
         }
       ]"
     `
@@ -79,7 +83,11 @@ function TextInput({ setSongsArr }: Props) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         // for fun, this could be using react typewriter lib
-        placeholder="Generate a hip-hop playlist featuring Baby Keem.."
+        placeholder={
+          playlistEmbedId
+            ? "Try generating another playlist!"
+            : "Generate a hip-hop playlist featuring Baby Keem.."
+        }
       />
 
       <button
