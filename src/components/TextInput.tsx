@@ -11,11 +11,9 @@ function TextInput({ setSongsArr, playlistEmbedId }: Props) {
   const [input, setInput] = useState("")
 
   const buildPrompt = (input: string) => {
-    //, "spotify_uri" in your response. Ensure that the "spotify_uri" field contains a valid URI for each song.
-    //      "spotify_uri": "spotify:track:6dGnYIeXmHdcikdzNNDMm2"
-    const promptTemplate = `You are a song recommender that only responds in JSON. 
+    const promptTemplate = `Imagine you're an AI DJ who's been asked to curate a playlist but only responds in JSON. 
     
-    Create a list of 7 unique songs and create a fun & creative playlist title based off the following statement: "${input}". 
+    Create a list of 10 unique songs, with the majority more recent songs, and a fun playlist title using trendy slang based off the following statement: "${input}". 
     
     Include "playlist_title", "id", "title", "artist", "album".
     

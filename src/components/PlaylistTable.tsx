@@ -1,5 +1,4 @@
 import { useSession } from "next-auth/react"
-import { headers } from "next/dist/client/components/headers"
 import Image from "next/image"
 import { Dispatch, SetStateAction } from "react"
 
@@ -12,8 +11,6 @@ type Props = {
 function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
   const { data: session } = useSession()
   const token = session?.accessToken
-  // console.log("token:", token)
-  // console.log(session)
 
   const handleClick = async () => {
     let response = await fetch(
@@ -78,7 +75,11 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
           }),
         })
           .then((resp) => resp.json())
-          .then((data) => console.log(data))
+          .then((data) => {
+            console.log(data)
+            setPlaylistEmbedId(playlistId)
+            setSongsArr([])
+          })
           .catch((error) =>
             console.error(
               `Error occurred while updating the playlist: ${error}`
@@ -88,14 +89,11 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
       .catch((error) =>
         console.error(`Error occurred while processing the songs: ${error}`)
       )
-
-    setPlaylistEmbedId(playlistId)
-    setSongsArr([])
   }
 
   return (
     // return it in a table & add a button to save playlist
-    <div className="flex flex-col items-end">
+    <div className="flex flex-col items-end lowercase">
       <button
         onClick={handleClick}
         className="mb-4 flex justify-between p-1 text-sm font-light bg-accent_1 text-white hover:opacity-50 rounded"
@@ -111,33 +109,34 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
         <Image
           src={"/create_jams.svg"}
           alt="save playlist"
-          width={100}
+          width={125}
           height={100}
         />
       </button>
-
-      <table className="w-full border-collapse text-white text-sm leading-4 font-light">
-        <thead>
-          <tr className="py-2 px-4 text-left underline decoration-accent_2">
-            <th>Title</th>
-            <th>Album</th>
-            <th>Duration</th>
-          </tr>
-        </thead>
-        <tbody>
-          {songsArr.map((song) => (
-            <tr key={song.id} className="border-b">
-              <td className="py-2 ">
-                {song.title}
-                <br />
-                <span className="text-xs">{song.artist}</span>
-              </td>
-              <td>{song?.album}</td>
-              <td>{song?.duration}</td>
+      <div className="max-h-[40vh] overflow-y-auto ">
+        <table className="w-full border-collapse text-white text-sm leading-4 font-light">
+          <thead>
+            <tr className="py-2 px-4 text-left underline decoration-accent_2">
+              <th>Title</th>
+              <th>Album</th>
+              <th>Duration</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {songsArr.map((song) => (
+              <tr key={song.id} className="border-b">
+                <td className="py-2 ">
+                  {song.title}
+                  <br />
+                  <span className="text-xs">{song.artist}</span>
+                </td>
+                <td className="text-xs">{song?.album}</td>
+                <td>{song?.duration}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
