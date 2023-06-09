@@ -35,44 +35,62 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
 
     // SPOTIFY URI search, since GPT URI fetch sucks
     const spotifyUriList: string[] = []
-    const results = songsArr.map((song) =>
-      fetch(
-        `https://api.spotify.com/v1/search?q=track%3A${encodeURIComponent(
-          song.title
-        )} artist%3A${encodeURIComponent(song.artist)} &type=track`,
-        {
-          method: "GET",
+    const results = songsArr.map(async (song) => {
+      try {
+        const response = await fetch(
+          `https://api.spotify.com/v1/search?q=track%3A${encodeURIComponent(
+            song.title
+          )} artist%3A${encodeURIComponent(song.artist)} &type=track`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        const data = await response.json()
+
+        if (!data.tracks.items.length) {
+          throw new Error(`couldn't find ${song.title}`)
+        }
+
+        const track_uri = data.tracks.items[0].uri
+        return track_uri
+      } catch (error) {
+        console.error(`error while fetching: ${error}`)
+      }
+    })
+
+    Promise.all(results)
+      .then((trackUris) => {
+        // Filter out undefined results (in case of error in fetching a song)
+        const validTrackUris = trackUris.filter(Boolean)
+
+        fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
-      )
-        .then((resp) => resp.json())
-        .then((data) => {
-          const track_uri = data.tracks.items[0].uri
-          spotifyUriList.push(track_uri)
-          console.log(track_uri)
-          console.log(spotifyUriList)
+          body: JSON.stringify({
+            uris: validTrackUris,
+          }),
         })
-    )
-
-    Promise.all(results).then(() => {
-      fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uris: spotifyUriList,
-        }),
+          .then((resp) => resp.json())
+          .then((data) => console.log(data))
+          .catch((error) =>
+            console.error(
+              `Error occurred while updating the playlist: ${error}`
+            )
+          )
       })
-        .then((resp) => resp.json())
-        .then((data) => console.log(data))
-      setPlaylistEmbedId(playlistId)
-      setSongsArr([])
-    })
+      .catch((error) =>
+        console.error(`Error occurred while processing the songs: ${error}`)
+      )
+
+    setPlaylistEmbedId(playlistId)
+    setSongsArr([])
   }
 
   return (
