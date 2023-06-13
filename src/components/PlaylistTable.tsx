@@ -113,7 +113,7 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
           height={100}
         />
       </button>
-      <div className="max-h-[40vh] overflow-y-auto ">
+      <div className="max-h-[40vh] overflow-y-auto self-stretch">
         <table className="w-full border-collapse text-white text-sm leading-4 font-light">
           <thead>
             <tr className="py-2 px-4 text-left underline decoration-accent_2">

@@ -4,10 +4,9 @@ import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 
 type Props = {
   setSongsArr: Dispatch<SetStateAction<Song[]>>
-  playlistEmbedId: String
 }
 
-function TextInput({ setSongsArr, playlistEmbedId }: Props) {
+function TextInput({ setSongsArr }: Props) {
   const [input, setInput] = useState("")
 
   const buildPrompt = (input: string) => {
@@ -55,7 +54,9 @@ function TextInput({ setSongsArr, playlistEmbedId }: Props) {
     }
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
     e.preventDefault()
 
     if (!input) {
@@ -80,12 +81,13 @@ function TextInput({ setSongsArr, playlistEmbedId }: Props) {
         rows={5}
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyPress={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            handleSubmit(e)
+          }
+        }}
         // for fun, this could be using react typewriter lib
-        placeholder={
-          playlistEmbedId
-            ? "Try generating another playlist!"
-            : "Generate a hip-hop playlist featuring Baby Keem.."
-        }
+        placeholder={"Generate a hip-hop playlist featuring Baby Keem.."}
       />
 
       <button

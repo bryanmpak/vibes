@@ -20,6 +20,7 @@ export default function Home() {
           <PlaylistTable
             songsArr={songsArr}
             setPlaylistEmbedId={setPlaylistEmbedId}
+            setSongsArr={setSongsArr}
           />
         )
       )}
