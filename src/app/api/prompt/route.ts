@@ -1,7 +1,11 @@
 import openai from "@/src/lib/openai"
 import { NextRequest, NextResponse } from "next/server"
 
-export async function POST(req: NextRequest) {
+export const config = {
+  runtime: "edge",
+}
+
+export default async function POST(req: NextRequest) {
   const { prompt } = await req.json()
 
   try {
