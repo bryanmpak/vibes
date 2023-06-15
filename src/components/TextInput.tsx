@@ -4,9 +4,10 @@ import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 
 type Props = {
   setSongsArr: Dispatch<SetStateAction<Song[]>>
+  setPlaylistEmbedId: Dispatch<SetStateAction<string>>
 }
 
-function TextInput({ setSongsArr }: Props) {
+function TextInput({ setSongsArr, setPlaylistEmbedId }: Props) {
   const [input, setInput] = useState("")
 
   const buildPrompt = (input: string) => {
@@ -68,8 +69,10 @@ function TextInput({ setSongsArr }: Props) {
     setInput("")
 
     const data = await sendPrompt(prompt)
-    console.log("generatedSongs:", data)
+    // console.log("generatedSongs:", data)
+    console.log(typeof setPlaylistEmbedId)
     setSongsArr(data)
+    setPlaylistEmbedId("")
   }
 
   return (

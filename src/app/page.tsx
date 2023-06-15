@@ -24,7 +24,10 @@ export default function Home() {
           />
         )
       )}
-      <TextInput setSongsArr={setSongsArr} />
+      <TextInput
+        setSongsArr={setSongsArr}
+        setPlaylistEmbedId={setPlaylistEmbedId}
+      />
       <button className="w-4 h-4" onClick={() => signOut()} />
     </div>
   )
