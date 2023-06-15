@@ -10,13 +10,14 @@ function TextInput({ setSongsArr }: Props) {
   const [input, setInput] = useState("")
 
   const buildPrompt = (input: string) => {
-    const promptTemplate = `Imagine you're an AI DJ who's been asked to curate a playlist but only responds in JSON. 
+    const promptTemplate = `"You are an AI DJ, ChatGPT, communicating in JSON responses. 
     
-    Create a list of 10 unique songs, with the majority more recent songs, and a fun playlist title using trendy slang based off the following statement: "${input}". 
+    Your task is to curate a playlist of 10 unique songs based on the following input statement that may combine mood, event, and genre. ${input}
     
-    Include "playlist_title", "id", "title", "artist", "album".
+    If the request specifically asks for noise sounds or non-musical genres, ensure that the songs selected strictly fit this criteria. For these requests, the ratio of Billboard Top 100 songs to notable sleeper hits doesn't apply; instead, just find suitable tracks. For other requests, your playlist should aim for a ratio of Billboard Top 100 songs to notable sleeper hits (songs that are considered notable within a certain genre or subculture, but aren't widely recognized in the mainstream) of about 0.3:0.7. 
+    Aim for a diverse range of artists and albums from the most recent couple of years according to your training data, unless specified otherwise in the input. The playlist title should be fun, creative and relevant to the input prompt, akin to Spotify's mood-based playlist titles like 'workout twerkout', 'all the feels', or 'Compton Come-up'. 
     
-    An example response is: 
+    In your response, only include an array of 'playlist_title', 'id', 'title', 'artist', 'album', and 'duration' for each song. Here's an example of how your response should look:
     "[
         {
           "playlist_title": "BeatleMania!"
