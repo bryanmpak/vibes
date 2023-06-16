@@ -1,7 +1,11 @@
 import openai from "@/src/lib/openai"
 import { NextRequest, NextResponse } from "next/server"
 
-const handler = async (req: NextRequest) => {
+export const config = {
+  runtime: "edge",
+}
+
+export default async function handler(req: NextRequest) {
   const { prompt } = await req.json()
 
   try {
@@ -23,9 +27,3 @@ const handler = async (req: NextRequest) => {
     return NextResponse.error()
   }
 }
-
-handler.config = {
-  runtime: "edge",
-}
-
-export default handler
