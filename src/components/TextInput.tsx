@@ -70,7 +70,6 @@ function TextInput({ setSongsArr, setPlaylistEmbedId }: Props) {
 
     const data = await sendPrompt(prompt)
     // console.log("generatedSongs:", data)
-    console.log(typeof setPlaylistEmbedId)
     setSongsArr(data)
     setPlaylistEmbedId("")
   }
