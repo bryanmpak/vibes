@@ -1,6 +1,11 @@
 import openai from "@/src/lib/openai"
 import { NextRequest, NextResponse } from "next/server"
 
+// Edge Function config
+export const config = {
+  runtime: "edge", // this is a pre-requisite
+}
+
 export async function POST(req: NextRequest) {
   const { prompt } = await req.json()
 
@@ -11,10 +16,11 @@ export async function POST(req: NextRequest) {
       max_tokens: 3000,
       temperature: 0,
     })
+    console.log(response.headers)
     const responseData = response.data.choices[0]?.text || "[]"
-    console.log("promptResponse:", responseData, "type:", typeof responseData)
+    // console.log("promptResponse:", responseData, "type:", typeof responseData)
     const jsonData = JSON.parse(responseData)
-    console.log(jsonData)
+    // console.log(jsonData)
 
     // .json() is an async method that returns a promise with JSON object
     return NextResponse.json(jsonData)
