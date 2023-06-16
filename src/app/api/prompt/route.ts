@@ -1,7 +1,6 @@
 import openai from "@/src/lib/openai"
 import { NextRequest, NextResponse } from "next/server"
 
-// Edge Function config
 export const runtime = "edge"
 
 export async function POST(req: NextRequest) {
@@ -11,7 +10,7 @@ export async function POST(req: NextRequest) {
     const response = await openai.createCompletion({
       model: "text-davinci-003",
       prompt,
-      max_tokens: 3000,
+      max_tokens: 1500,
       temperature: 0,
     })
     console.log(response.headers)
