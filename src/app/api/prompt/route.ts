@@ -1,7 +1,7 @@
 import openai from "@/src/lib/openai"
 import { NextRequest, NextResponse } from "next/server"
 
-export const runtime = "edge"
+// export const runtime = "edge"
 
 export async function POST(req: NextRequest) {
   const { prompt } = await req.json()
@@ -25,3 +25,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.error()
   }
 }
+
+// might need to stream in the response, save it in state & pass to songsArr once done
+// as a workaround the vercel timeout limitation...

@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "src/app/api/prompt/route.ts": {
-      "maxDuration": 60
-    }
-  }
-}
