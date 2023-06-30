@@ -4,6 +4,8 @@ type Props = {
   playlistEmbedId: String
 }
 
+// this doesn't work for mobile web - need alternate solution
+
 function SpotifyPlayer({ playlistEmbedId }: Props) {
   return (
     <div>
