@@ -32,7 +32,7 @@ export default async function RootLayout({
           {!session ? (
             <Login />
           ) : (
-            <main className="flex  mx-auto h-screen flex-col max-w-[800px] justify-between">
+            <main className="flex  mx-auto min-h-full flex-col max-w-[800px] justify-between">
               <Navbar />
               {children}
             </main>

@@ -6,9 +6,17 @@ type Props = {
   setPlaylistEmbedId: Dispatch<SetStateAction<string>>
   songsArr: Song[]
   setSongsArr: Dispatch<SetStateAction<Song[]>>
+  setIsPlaylistAdded: Dispatch<SetStateAction<boolean>>
+  setStatus: Dispatch<SetStateAction<"idle" | "loading" | "success" | "error">>
 }
 
-function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
+function PlaylistTable({
+  songsArr,
+  setPlaylistEmbedId,
+  setSongsArr,
+  setIsPlaylistAdded,
+  setStatus,
+}: Props) {
   const { data: session } = useSession()
   const token = session?.accessToken
 
@@ -79,6 +87,8 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
             console.log(data)
             setPlaylistEmbedId(playlistId)
             setSongsArr([])
+            setIsPlaylistAdded(true)
+            setStatus("idle")
           })
           .catch((error) =>
             console.error(
@@ -113,7 +123,7 @@ function PlaylistTable({ songsArr, setPlaylistEmbedId, setSongsArr }: Props) {
           height={100}
         />
       </button>
-      <div className="max-h-[40vh] overflow-y-auto self-stretch">
+      <div className="max-h-[50vh] overflow-y-auto self-stretch">
         <table className="w-full border-collapse text-white text-sm leading-4 font-light">
           <thead>
             <tr className="py-2 px-4 text-left underline decoration-accent_2">
