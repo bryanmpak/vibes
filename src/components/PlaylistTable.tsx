@@ -19,6 +19,8 @@ function PlaylistTable({
 }: Props) {
   const { data: session } = useSession()
   const token = session?.accessToken
+  console.log(session)
+  console.log("songsArr is passed", songsArr)
 
   const handleClick = async () => {
     let response = await fetch(
@@ -36,7 +38,7 @@ function PlaylistTable({
     )
     let data = await response.json()
     const playlistId = data.id
-    // console.log("playlistId:", playlistId)
+    console.log("playlistId:", playlistId)
 
     // SPOTIFY URI search, since GPT URI fetch sucks
     const spotifyUriList: string[] = []

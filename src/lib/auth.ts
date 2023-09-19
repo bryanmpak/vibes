@@ -1,6 +1,5 @@
 import { NextAuthOptions } from "next-auth"
 import SpotifyProvider from "next-auth/providers/spotify"
-import GoogleProvider from "next-auth/providers/google"
 import { JWT } from "next-auth/jwt"
 
 const SPOTIFY_REFRESH_TOKEN_URL = "https://accounts.spotify.com/api/token"

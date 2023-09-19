@@ -1,5 +1,4 @@
 "use client"
-import { signOut } from "next-auth/react"
 import { useState } from "react"
 import LoadingScreen from "../components/LoadingScreen"
 import PlaylistTable from "../components/PlaylistTable"

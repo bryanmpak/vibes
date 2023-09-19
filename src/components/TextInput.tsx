@@ -29,6 +29,7 @@ function TextInput({
     }
 
     setStatus("loading")
+    setSongsArr([])
     const prompt = buildPrompt(input)
     setInput("")
 
@@ -48,6 +49,7 @@ function TextInput({
         className="p-2 bg-transparent resize-none focus:outline-none rounded-md"
         rows={5}
         value={input}
+        disabled={status === "loading"}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
